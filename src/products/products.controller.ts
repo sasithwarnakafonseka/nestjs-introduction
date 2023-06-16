@@ -6,24 +6,30 @@ import {
   Param,
   Patch,
   Delete,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 
 import { ProductsService } from './products.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
+  @UseGuards(AuthGuard())
   async addProduct(
     @Body('title') prodTitle: string,
     @Body('description') prodDesc: string,
     @Body('price') prodPrice: number,
+    @Req() req,
   ) {
     const generatedId = await this.productsService.insertProduct(
       prodTitle,
       prodDesc,
       prodPrice,
+      req.user
     );
     return { id: generatedId };
   }

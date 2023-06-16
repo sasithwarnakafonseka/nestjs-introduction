@@ -6,12 +6,17 @@ import { AppService } from './app.service';
 import { ProductsModule } from './products/products.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+      isGlobal: true,
+    }),
     ProductsModule,
     MongooseModule.forRoot(
-      'mongodb+srv://new-user-31:IZPA7MVgxdArPKWz@cluster0.745b4y5.mongodb.net/nestjs?retryWrites=true&w=majority',
+      process.env.DB_URL,
     ),
     AuthModule,
     UsersModule,

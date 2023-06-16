@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { Product } from './product.model';
+import { User } from 'src/auth/schemas/user.schema';
 
 @Injectable()
 export class ProductsService {
@@ -10,13 +11,15 @@ export class ProductsService {
     @InjectModel('Product') private readonly productModel: Model<Product>,
   ) {}
 
-  async insertProduct(title: string, desc: string, price: number) {
+  async insertProduct(title: string, desc: string, price: number,user:User) {
+   
     const newProduct = new this.productModel({
       title,
       description: desc,
       price,
     });
-    const result = await newProduct.save();
+    const data = Object.assign(newProduct,{user:user._id})
+    const result = await data.save();
     return result.id as string;
   }
 
