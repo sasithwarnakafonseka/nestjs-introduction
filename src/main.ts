@@ -1,7 +1,8 @@
+// import { cookieParser } from 'cookie-parser';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import helmet from 'helmet';
-import cookieParser from 'cookie-parser';
+
 import rateLimit from 'express-rate-limit';
 import configuration from './core/config/configuration';
 import { UnauthorizedException, ValidationPipe } from '@nestjs/common';
@@ -43,7 +44,7 @@ async function bootstrap() {
     credentials: true,
   });
   // app.enableCors();
-  app.use(cookieParser());
+  // app.use(cookieParser());
 
   app.useGlobalFilters(new ValidationFilter());
   app.useGlobalPipes(new ValidationPipe({ exceptionFactory: customExceptionFactory }));
