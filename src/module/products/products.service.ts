@@ -3,22 +3,22 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { Product } from './product.model';
-import { User } from 'src/auth/schemas/user.schema';
+import { User } from 'src/module/auth/schemas/user.schema';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectModel('Product') private readonly productModel: Model<Product>,
-  ) {}
+  ) { }
 
-  async insertProduct(title: string, desc: string, price: number,user:User) {
-   
+  async insertProduct(title: string, desc: string, price: number, user: User) {
+
     const newProduct = new this.productModel({
       title,
       description: desc,
       price,
     });
-    const data = Object.assign(newProduct,{user:user._id})
+    const data = Object.assign(newProduct, { user: user._id })
     const result = await data.save();
     return result.id as string;
   }
@@ -63,7 +63,7 @@ export class ProductsService {
   }
 
   async deleteProduct(prodId: string) {
-    const result = await this.productModel.deleteOne({_id: prodId}).exec();
+    const result = await this.productModel.deleteOne({ _id: prodId }).exec();
     // if (result.n === 0) {
     //   throw new NotFoundException('Could not find product.');
     // }
